@@ -1,0 +1,234 @@
+[
+	{
+		"id": "Repair",
+		"icon": "repair",
+		"description": "Repair Menu",
+		"items" : [
+			{
+				"id": "Repair All",
+				"icon": "repair",
+				"description": "Fully repair the vehicle you are driving",
+				"actionType": "command",
+				"action": "repair",
+				"close": true
+			},
+			{
+				"id": "Repair Engine",
+				"icon": "engine",
+				"description": "Fully repair the engine in the vehicle you are driving",
+				"actionType": "command",
+				"action": "rengine",
+				"close": true
+			},
+			{
+				"id": "Repair Body",
+				"icon": "_damage",
+				"description": "Fully repair the body of the vehicle you are driving",
+				"actionType": "command",
+				"action": "rbody",
+				"close": false
+			},
+			{
+				"id": "Repair Fuel Tank/Batteries",
+				"icon": "_car-fuel",
+				"description": "Fully repair the fuel tank/batteries of the vehicle you are driving",
+				"actionType": "command",
+				"action": "rtank",
+				"close": false
+			},
+			{
+				"id": "Repair All Wheels",
+				"icon": "_tireALL",
+				"description": "Fully repair the wheels of the vehicle you are driving",
+				"actionType": "command",
+				"action": "tiredamage",
+				"close": false
+			},
+			{
+				"id": "Repair Closest Wheel",
+				"icon": "_tireClosest",
+				"description": "Repair the nearest damaged wheel/tire",
+				"actionType": "command",
+				"action": "rwheel",
+				"close": true
+			}
+		],
+		"close": true
+	},
+	{
+		"id": "Set Engine Damage Level",
+		"icon": "engine",
+		"description": "Manually set engine health",
+		"items" : [
+			{
+				"id": "1",
+				"icon": "0",
+				"description": "Zero Health",
+				"actionType": "command",
+				"action": "setdamage 0",
+				"close": false
+			},
+			{
+				"id": "10",
+				"icon": "10",
+				"description": "10% Health",
+				"actionType": "command",
+				"action": "setdamage 10",
+				"close": false
+			},
+			{
+				"id": "20",
+				"icon": "20",
+				"description": "20% Health",
+				"actionType": "command",
+				"action": "setdamage 20",
+				"close": false
+			},
+			{
+				"id": "30",
+				"icon": "30",
+				"description": "30% Health",
+				"actionType": "command",
+				"action": "setdamage 30",
+				"close": false
+			},
+			{
+				"id": "40",
+				"icon": "40",
+				"description": "40% Health",
+				"actionType": "command",
+				"action": "setdamage 40",
+				"close": false
+			},
+			{
+				"id": "50",
+				"icon": "50",
+				"description": "50% Health",
+				"actionType": "command",
+				"action": "setdamage 50",
+				"close": false
+			},
+			{
+				"id": "60",
+				"icon": "60",
+				"description": "60% Health",
+				"actionType": "command",
+				"action": "setdamage 60",
+				"close": false
+			},
+			{
+				"id": "70",
+				"icon": "70",
+				"description": "70% Health",
+				"actionType": "command",
+				"action": "setdamage 70",
+				"close": false
+			},
+			{
+				"id": "80",
+				"icon": "80",
+				"description": "80% Health",
+				"actionType": "command",
+				"action": "setdamage 80",
+				"close": false
+			},
+			{
+				"id": "90",
+				"icon": "90",
+				"description": "90% Health",
+				"actionType": "command",
+				"action": "setdamage 90",
+				"close": false
+			},
+			{
+				"id": "100",
+				"icon": "100",
+				"description": "FULL Health",
+				"actionType": "command",
+				"action": "setdamage 100",
+				"close": false
+			}
+		],
+		"close": true
+	},
+	{
+		"id": "Set Tire Damage",
+		"icon": "tire",
+		"description": "Tire/Wheel Damage",
+		"items" : [
+			{
+				"id": "Fix Closest",
+				"icon": "_tireClosest",
+				"description": "Fix closest tire/wheel",
+				"actionType": "command",
+				"action": "rwheel",
+				"close": true
+			},
+			{
+				"id": "Fix All Wheels",
+				"icon": "_tireALL",
+				"description": "Fix ALL tires/wheels",
+				"actionType": "command",
+				"action": "tiredamage",
+				"close": false
+			},
+			{
+				"id": "Toggle Wheel Damage",
+				"icon": "_wheel",
+				"description": "Toggle wheel damage",
+				"actionType": "command",
+				"action": "tiredamage wheel",
+				"close": false
+			},
+			{
+				"id": "Front Left",
+				"icon": "_tireFL",
+				"description": "Fix/Damage Front Left",
+				"actionType": "command",
+				"action": "tiredamage lf",
+				"close": false
+			},
+			{
+				"id": "Front Right",
+				"icon": "_tireFR",
+				"description": "Fix/Damage Front Right",
+				"actionType": "command",
+				"action": "tiredamage rf",
+				"close": false
+			},
+			{
+				"id": "Rear left",
+				"icon": "_tireRL",
+				"description": "Fix/Damage Left Rear",
+				"actionType": "command",
+				"action": "tiredamage lf",
+				"close": false
+			},
+			{
+				"id": "Rear Right",
+				"icon": "_tireRR",
+				"description": "Fix/Damage Right Rear",
+				"actionType": "command",
+				"action": "tiredamage rr",
+				"close": false
+			}
+		],
+		"close": true
+	},
+	//{
+	//	"id": "Possible Engine Fire",
+	//	"icon": "enginefire",
+	//	"description": "Toggle chance of engine fire",
+	//	"actionType": "command",
+	//	"action": "county-medevac",
+	//	"close": true
+	//},
+	{
+		"id": "Toggle Rollovers",
+		"icon": "rollover",
+		"description": "Toggle rollovers",
+		"actionType": "command",
+		"action": "rollovers",
+		"close": true
+	}
+]

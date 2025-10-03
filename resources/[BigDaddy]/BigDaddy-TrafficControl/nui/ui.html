@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="assets/BigDaddy-RadialMenu.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+
+
+	<!-- ****************** START MENU *********************-->
+
+	<script>
+		// menu config options
+		var menukey = ''; // which key opens menu ex. f1
+		var keepOpen = true; // true = menu stays open until backspace or esc is pressed, false = you have to hold the menu key down to keep it open
+	</script>
+
+<div class="hidden menuwrapper" id="menu">
+	<div class="menu" id="menuHolder"></div>
+	<div class="menucenter">
+		<div class="label" id="menumainlabel">??</div>
+		<div class="hidden center" id="menubackbutton" onclick='CallBack("Back")'><div id="menubacklabel">BACK</div></div>
+		<div class="label" id="menusecondarylabel">MENU</div>
+	</div>
+</div>
+<script type="text/html" id="defaultMenu">
+	<div class="hidden menuitem" id="opt1" style="transform: translate(-50%, 0) rotate(0);"><div class="menuitemholder" id="mih1" data-id=""><img id="icon1" src="" style="transform: translate(-50%, 2vh) rotate(0);" /></div></div>
+	<div class="hidden menuitem" id="opt2" style="transform: translate(-50%, 0) rotate(30deg);"><div class="menuitemholder" id="mih2" data-id=""><img id="icon2" src="" style="transform: translate(-50%, 2vh) rotate(-30deg);" /></div></div>
+	<div class="hidden menuitem" id="opt3" style="transform: translate(-50%, 0) rotate(60deg);"><div class="menuitemholder" id="mih3" data-id=""><img id="icon3" src="" style="transform: translate(-50%, 2vh) rotate(-60deg);" /></div></div>
+	<div class="hidden menuitem" id="opt4" style="transform: translate(-50%, 0) rotate(90deg);"><div class="menuitemholder" id="mih4" data-id=""><img id="icon4" src="" style="transform: translate(-50%, 2vh) rotate(-90deg);" /></div></div>
+	<div class="hidden menuitem" id="opt5" style="transform: translate(-50%, 0) rotate(120deg);"><div class="menuitemholder" id="mih5" data-id=""><img id="icon5" src="" style="transform: translate(-50%, 2vh) rotate(-120deg);" /></div></div>
+	<div class="hidden menuitem" id="opt6" style="transform: translate(-50%, 0) rotate(150deg);"><div class="menuitemholder" id="mih6" data-id=""><img id="icon6" src="" style="transform: translate(-50%, 2vh) rotate(-150deg);" /></div></div>
+	<div class="hidden menuitem" id="opt7" style="transform: translate(-50%, 0) rotate(180deg);"><div class="menuitemholder" id="mih7" data-id=""><img id="icon7" src="" style="transform: translate(-50%, 2vh) rotate(-180deg);" /></div></div>
+	<div class="hidden menuitem" id="opt8" style="transform: translate(-50%, 0) rotate(210deg);"><div class="menuitemholder" id="mih8" data-id=""><img id="icon8" src="" style="transform: translate(-50%, 2vh) rotate(-210deg);" /></div></div>
+	<div class="hidden menuitem" id="opt9" style="transform: translate(-50%, 0) rotate(240deg);"><div class="menuitemholder" id="mih9" data-id=""><img id="icon9" src="" style="transform: translate(-50%, 2vh) rotate(-240deg);" /></div></div>
+	<div class="hidden menuitem" id="opt10" style="transform: translate(-50%, 0) rotate(270deg);"><div class="menuitemholder" id="mih10" data-id=""><img id="icon10" src="" style="transform: translate(-50%, 2vh) rotate(-270deg);" /></div></div>
+	<div class="hidden menuitem" id="opt11" style="transform: translate(-50%, 0) rotate(300deg);"><div class="menuitemholder" id="mih11" data-id=""><img id="icon11" src="" style="transform: translate(-50%, 2vh) rotate(-300deg);" /></div></div>
+	<div class="hidden menuitem" id="opt12" style="transform: translate(-50%, 0) rotate(330deg);"><div class="menuitemholder" id="mih12" data-id=""><img id="icon12" src="" style="transform: translate(-50%, 2vh) rotate(-330deg);" /></div></div>
+</script>
+
+	<script>
+		var to;
+		$(document).ready(function () {
+			$('.menuitemholder').hover(function () {
+				clearTimeout(to);
+				$('.menuitemholder').removeClass('hover');
+				$(this).addClass('hover');
+				$('#menusecondarylabel').html($(this).attr('data-name'));
+			}, function () {
+				var t = this;
+				to = setTimeout(function () {
+					$(t).removeClass('hover');
+					$('#menusecondarylabel').html('');
+				}, 400);
+			});
+
+			$('.menuitemholder').click(function () {
+				CallBack('ItemClick', $(this).attr("data-id"));
+			});
+		});
+
+		var eventCallback = {
+
+			Visible: function (data) {
+				if (data.visible) {
+					$('#menu').removeClass('hidden');
+				} else {
+					$('#menu').addClass('hidden');
+				}
+			},
+
+			toggle: function (data) {
+				if ($('#menu').hasClass('hidden')) {
+					$('#menu').removeClass('hidden');
+				} else {
+					$('#menu').addClass('hidden');
+				}
+			},
+
+			RenderMenu: function (data) {
+				Reset();
+				var d = JSON.parse(data.items);
+				var x = 0;
+				$('#menumainlabel').html(data.menuname);
+				for (x = 0; x < d.items.length; x++) {
+					tot = x + 1;
+					if (x > 11) {
+						//too many to fit so done
+					} else {
+						var mi = $('#opt' + (x + 1));
+						var mih = $('#mih' + (x + 1));
+						var icon = $('#icon' + (x + 1));
+						$(mih).attr('data-id', d.items[x].id);
+						$(mih).attr('data-name', d.items[x].description)
+						var ii = '';
+						if (imageExists('assets/img/' + d.items[x].icon + '.svg')) {
+							ii = d.items[x].icon + '.svg';
+						} else {
+							ii = d.items[x].icon + '.png'
+						}
+						$(icon).attr('src', 'assets/img/' + ii);
+						$(mi).removeClass('hidden');
+						if (event.data.visible) {
+							$('#menu').removeClass('hidden');
+						}
+						if (event.data.back) {
+							$('#menubackbutton').removeClass('hidden');
+						} else {
+							if (!$('#menubackbutton').hasClass('hidden')) $('#menubackbutton').addClass('hidden');
+						}
+					}
+				}
+				if (x < 12) {
+					for (let i = 1; i < tot; i++) {
+						$('#opt' + (i + 1)).css('transform', 'translate(-50%,0%) rotate(' + ((360 / tot) * i) + 'deg)');
+						$('#icon' + (i + 1)).css('transform', 'translate(-50%,2vh) rotate(-' + ((360 / tot) * i) + 'deg)');
+					}
+					for (let i = tot + 1; i < 13; i++) {
+						$('#opt' + i).remove();
+					}
+				}
+			}
+		};
+
+		window.addEventListener('message', function (event) {
+			eventCallback[event.data.action](event.data);
+		});
+
+		window.addEventListener('keyup', (event) => {
+			const keyName = event.key;
+			if (event.key == 'Backspace' || event.key == 'Escape' || (!keepOpen && event.key == menukey)) {
+				CallBack('MenuClosed');
+			}
+		});
+
+		function CallBack(f, p) {
+			var pp = (p != undefined ? p : '');
+			fetch(`https://${(window.GetParentResourceName ? window.GetParentResourceName() : "nui-frame-app")}/${f}`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json; charset=UTF-8',
+				},
+				body: JSON.stringify({
+					"itemId": pp
+				})
+			});
+		}
+
+		function Reset() {
+			$('#menuHolder').html($('#defaultMenu').html());
+			$('.menuitemholder').hover(function () {
+				clearTimeout(to);
+				$('.menuitemholder').removeClass('hover');
+				$(this).addClass('hover');
+				$('#menusecondarylabel').html($(this).attr('data-name'));
+			}, function () {
+				var t = this;
+				to = setTimeout(function () {
+					$(t).removeClass('hover');
+					$('#menusecondarylabel').html('');
+				}, 400);
+			});
+
+			$('.menuitemholder').click(function () {
+				console.log('clicky: ' + $(this).attr("data-id"));
+				CallBack('ItemClick', $(this).attr("data-id"));
+			});
+			return;
+			for (let i = 1; i <= 12; i++) {
+				if (!$('#opt' + 1).hasClass('hidden')) $('#opt' + 1).addClass('hidden');
+				$('#mih' + i).attr('data-id', '');
+				$('#mih' + i).attr('data-name', '');
+				$('#icon' + i).attr('src', '');
+			}
+		}
+
+		function imageExists(image_url) {
+			var http = new XMLHttpRequest();
+			http.open('HEAD', image_url, false);
+			http.send();
+			return http.status != 404;
+		}
+
+	</script>
+
+	<!-- ****************** END MENU *********************-->
+
+
+
+</body>
+
+</html>

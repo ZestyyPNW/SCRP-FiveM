@@ -1,0 +1,253 @@
+<html>
+
+<head>
+	<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.1/howler.min.js" type="text/javascript"></script>
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js" type="text/javascript"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body style="font-family: Arial, sans-serif; background-color: rgba(0, 0, 0, 0);display: block;">
+	<style>
+
+		@font-face {
+			font-family: digital;
+			src: url('digital.ttf');
+		}
+
+		#chargescreen {
+			position: absolute;
+			color: white;
+			left: 50%;
+			transform: translate(-50%,0);
+			bottom: 15px;
+			display:none;
+		}
+
+		#pumpscreen {
+			position: absolute;
+			color: black;
+			left: 50%;
+			transform: translate(-50%,0);
+			bottom: 15px;
+			display: none;
+		}
+
+		#cost {
+			font-family: digital;
+			position: absolute;
+			font-size: 111px;
+			top: 55px;
+			right: 97px;
+		}
+
+		#gals {
+			font-family: digital;
+			position: absolute;
+			font-size: 81px;
+			top: 166px;
+			right: 103px
+		}
+
+		#ecost {
+			position: absolute;
+			font-size: 26px;
+			bottom: 75px;
+			left: 97px;
+		}
+
+		#ekw {
+			position: absolute;
+			font-size: 15px;
+			top: 171px;
+			right: 95px;
+		}
+		#etime {
+			position: absolute;
+			font-size: 15px;
+			top: 210px;
+			right: 95px;
+		}
+		#eperc {
+			position: absolute;
+			font-size: 30px;
+			top: 117px;
+			right: 112px
+		}
+
+		#battery {
+			position: absolute;
+			left: 98px;
+			top: 104px;
+		}
+
+		#thisSale, #moneySymbol, #gallons {
+			color: white;
+			position: absolute;
+		}
+
+		#thisSale {
+			font-size: 20px;
+			top: 29px;
+			left: 50%;
+			transform: translate(-50%,0)
+		}
+
+		#moneySymbol {
+			font-size: 40px;
+			top: 80px;
+			left: 38px;
+		}
+
+		#gallons {
+			font-size: 17px;
+			bottom: 29px;
+			left: 50%;
+			transform: translate(-50%,0);
+		}
+
+		#fuelgauge {
+			display:none;
+			color:white;
+			bottom: 75px;
+			left:140px;
+			position: fixed;
+			width: 100px;
+		}
+
+		#empty {
+			font-size: 15px;
+			font-weight: bold;
+			position: absolute;
+			left: 0;
+		}
+		#full {
+			font-size: 15px;
+			font-weight: bold;
+			position: absolute;
+			right: 0;
+		}
+		#gauge {
+			position: absolute;
+			width: 35px;
+			border: 1px solid transparent;
+			background-color: rgb(5, 102, 5);
+			left: 15px;
+			height: 10px;
+			top: 3px;
+		}
+		#gaugeborder {
+			position: absolute;
+			width: 70px;
+			border: 1px solid white;
+			background: rgb(255, 255, 255, 0.4);
+			left: 15px;
+			height: 10px;
+			top: 3px;
+		}
+
+	</style>
+	<div id="debug"></div>
+
+	<div id="pumpscreen">
+		<img src="pumpscreen.png" />
+		<div id="moneySymbol">$</div>
+		<div id="thisSale">This Sale</div>
+		<div id="gallons">Gallons</div>
+		<div id="cost">999.99</div>
+		<div id="gals">99.999</div>
+	</div>
+
+	<div id="chargescreen">
+		<img src="chargescreen.png" />
+		<img src="bat0.png" id="battery" />
+		<div id="eperc">99.99%</div>
+		<div id="ecost">$999.99</div>
+		<div id="ekw">99.999</div>
+		<div id="etime">99:99</div>
+	</div>
+
+	<div id="fuelgauge">
+		<div id="full">F</div>
+		<div id="gauge"></div>
+		<div id="gaugeborder"></div>
+		<div id="empty">E</div>
+	</div>
+
+	<script>
+		var to = -1;
+		var audioPlayer = null;
+		var SoundPlayer = null;
+		var SoundPlayerFlow = null;
+		var distance = 9999999;
+		var maxVolume = 0;
+		var radius = 0;
+		window.addEventListener('message', function (event) {
+			if (event.data.action === 'FuelGaugePosition') {
+				var d = event.data.Positioning.split(',');
+				if (d[0] == 'true') {
+					$("#fuelgauge").show();
+					$("#fuelgauge").css('left', d[1]);
+					$("#fuelgauge").css('bottom', d[2]);
+				} else {
+					$("#fuelgauge").hide();
+				}
+			} else if (event.data.action === 'FuelGauge') {
+				if (!event.data.isCharge) {
+					$("#fuelgauge").hide();
+				} else {
+					$("#fuelgauge").show();
+					var width = (70 * event.data.gallons);
+					$('#gauge').css('width', width + 'px');
+					var color = "green";
+					if (event.data.gallons < .3) color = "orange";
+					if (event.data.gallons < .1) color = "red";
+					$('#gauge').css('background', color);
+				}
+			} else if (event.data.action === 'FuelData') {
+				$('#pumpscreen').show();
+				$('#thisSale').html(event.data.thisSale);
+				$('#gallons').html(event.data.gallons);
+				$('#moneySymbol').html(event.data.moneySymbol);
+				$('#cost').html(event.data.TotalCost);
+				$('#gals').html(event.data.GallonsPurchased);
+				clearTimeout(to);
+				to = setTimeout(function () { $('#pumpscreen').hide(); }, 4000);
+			} else if (event.data.action === 'ChargeData') {
+				$('#chargescreen').show();
+				$('#ecost').html(event.data.TotalCost);
+				$('#ekw').html(event.data.GallonsPurchased);
+				$('#eperc').html(event.data.Percent + '%');
+				$('#etime').html(event.data.ElapsedTime);
+				if (event.data.Percent < 10) {
+					$('#battery').attr('src','bat0.png');
+				} else if (event.data.Percent < 20) {
+					$('#battery').attr('src','bat10.png');
+				} else if (event.data.Percent < 30) {
+					$('#battery').attr('src','bat20.png');
+				} else if (event.data.Percent < 40) {
+					$('#battery').attr('src','bat30.png');
+				} else if (event.data.Percent < 50) {
+					$('#battery').attr('src','bat40.png');
+				} else if (event.data.Percent < 60) {
+					$('#battery').attr('src','bat50.png');
+				} else if (event.data.Percent < 70) {
+					$('#battery').attr('src','bat60.png');
+				} else if (event.data.Percent < 80) {
+					$('#battery').attr('src','bat70.png');
+				} else if (event.data.Percent < 90) {
+					$('#battery').attr('src','bat80.png');
+				} else if (event.data.Percent < 99) {
+					$('#battery').attr('src','bat90.png');
+				} else if (event.data.Percent >= 99) {
+					$('#battery').attr('src','bat100.png');
+				}
+				clearTimeout(to);
+				to = setTimeout(function () { $('#chargescreen').hide(); }, 4000);
+			}
+		});
+
+	</script>
+</body>
+
+</html >

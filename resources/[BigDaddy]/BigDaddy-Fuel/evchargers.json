@@ -1,0 +1,224 @@
+[
+	{
+		"location": {
+			"X": -944.9136,
+			"Y": -184.695969,
+			"Z": 40.7878532
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 203.0
+		},
+		"model": "stt_prop_stunt_bowling_pin"
+	},
+
+	{
+		"location": {
+			"X": -940.93335,
+			"Y": -182.839951,
+			"Z": 40.78124
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 203.0
+		},
+		"model": "stt_prop_stunt_bowling_pin"
+	},
+
+	{
+		"location": {
+			"X": -747.3642,
+			"Y": -81.62102,
+			"Z": 40.6513824
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 203.0
+		},
+		"model": "stt_prop_stunt_bowling_pin"
+	},
+
+	{
+		"location": {
+			"X": -742.15686,
+			"Y": -79.19278,
+			"Z": 40.6513824
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 203.0
+		},
+		"model": "stt_prop_stunt_bowling_pin"
+	},
+
+	{
+		"location": {
+			"X": -1596.32288,
+			"Y": -920.704956,
+			"Z": 7.94577551
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 142.0
+		},
+		"model": "stt_prop_stunt_bowling_pin"
+	},
+
+	{
+		"location": {
+			"X": -1598.71968,
+			"Y": -918.6972,
+			"Z": 7.94577551
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 142.0
+		},
+		"model": "stt_prop_stunt_bowling_pin"
+	},
+
+	{
+		"location": {
+			"X": -1601.08545,
+			"Y": -916.7086,
+			"Z": 7.94577551
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 142.0
+		},
+		"model": "stt_prop_stunt_bowling_pin"
+	},
+
+	{
+		"location": {
+			"X": 933.270142,
+			"Y": -24.7358017,
+			"Z": 77.64714
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 332.0
+		},
+		"model": "stt_prop_stunt_bowling_pin"
+	},
+
+	{
+		"location": {
+			"X": 936.3191,
+			"Y": -26.57888,
+			"Z": 77.64714
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 332.0
+		},
+		"model": "stt_prop_stunt_bowling_pin"
+	},
+
+	{
+		"location": {
+			"X": 939.1561,
+			"Y": -28.2894,
+			"Z": 77.64714
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 332.0
+		},
+		"model": "stt_prop_stunt_bowling_pin"
+	},
+
+	{
+		"location": {
+			"X": 942.1766,
+			"Y": -30.20456,
+			"Z": 77.64714
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 332.0
+		},
+		"model": "stt_prop_stunt_bowling_pin"
+	},
+
+	{
+		"location": {
+			"X": 1979.54773,
+			"Y": 3788.674,
+			"Z": 31.0993233
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 33.0
+		},
+		"model": "EVcharger1"
+	},
+
+	{
+		"location": {
+			"X": 140.814865,
+			"Y": 6612.11475,
+			"Z": 30.8721256
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 0.0
+		},
+		"model": "EVcharger1"
+	},
+	{
+		"location": {
+			"X": -215.1582,
+			"Y": -1937.9707,
+			"Z": 26.4204
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 30.1758
+		},
+		"model": "stt_prop_stunt_bowling_pin"
+	},
+	{
+		"location": {
+			"X": -212.0788,
+			"Y": -1936.0874,
+			"Z": 26.4204
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 30.1758
+		},
+		"model": "stt_prop_stunt_bowling_pin"
+	},
+	{
+		"location": {
+			"X": -338.6551,
+			"Y": -1495.984,
+			"Z": 29.5
+		},
+		"rotation": {
+			"X": 0.0,
+			"Y": 0.0,
+			"Z": 87.10256
+		},
+		"model": "EVcharger1"
+	}
+
+
+]

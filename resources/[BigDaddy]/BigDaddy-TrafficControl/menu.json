@@ -1,0 +1,75 @@
+[
+	{
+		"id": "flares",
+		"icon": "flare",
+		"description": "Set Road Flares",
+		"items": [],
+		"actionType": "command",
+		"action": "flare",
+		"close": true
+	},
+	{
+		"id": "cone",
+		"icon": "cone",
+		"description": "Set Traffic Cones",
+		"items": [],
+		"actionType": "command",
+		"action": "cone",
+		"close": true
+	},
+	{
+		"id": "pylon",
+		"icon": "pylon",
+		"description": "Set Traffic Pylon",
+		"items": [],
+		"actionType": "command",
+		"action": "pylon",
+		"close": true
+	},
+	{
+		"id": "barrier",
+		"icon": "barrier",
+		"description": "Set Traffic Barrier",
+		"items": [],
+		"actionType": "command",
+		"action": "barrier",
+		"close": true
+	},
+	{
+		"id": "triangle",
+		"icon": "triangle",
+		"description": "Set Traffic Triangle",
+		"items": [],
+		"actionType": "command",
+		"action": "triangle",
+		"close": true
+	},
+	{
+		"id": "flagger",
+		"icon": "flagman",
+		"description": "Be the Traffic Flagman",
+		"items": [],
+		"actionType": "command",
+		"action": "flagman",
+		"close": true
+	},
+	{
+		"id": "nodes",
+		"icon": "nodes",
+		"description": "Show nearby traffic nodes",
+		"items": [],
+		"actionType": "command",
+		"action": "nodes",
+		"close": true
+	},
+	{
+		"id": "clear",
+		"icon": "no",
+		"description": "Clear all items within 50m",
+		"items": [],
+		"actionType": "command",
+		"action": "clearsafetyobjects",
+		"close": true
+	}
+
+]

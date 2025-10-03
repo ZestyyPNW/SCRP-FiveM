@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<AudioWaveContainer>
+  <Version value="1"/>
+  <ChunkIndices value="True"/>
+  <Streams>
+    <Item>
+      <Name>pumpmount</Name>
+      <FileName>pumpmount.wav</FileName>
+      <Chunks>
+        <Item>
+          <Type>peak</Type>
+        </Item>
+        <Item>
+          <Type>data</Type>
+        </Item>
+        <Item>
+          <Type>format</Type>
+          <Codec>ADPCM</Codec>
+          <Samples value="14917"/>
+          <SampleRate value="48000"/>
+          <Headroom value="-100"/>
+          <PlayBegin value="0"/>
+          <PlayEnd value="0"/>
+          <LoopBegin value="0"/>
+          <LoopEnd value="-1"/>
+          <LoopPoint value="0"/>
+          <Peak unk="0"/>
+        </Item>
+      </Chunks>
+    </Item>
+    <Item>
+      <Name>carmount</Name>
+      <FileName>carmount.wav</FileName>
+      <Chunks>
+        <Item>
+          <Type>peak</Type>
+        </Item>
+        <Item>
+          <Type>data</Type>
+        </Item>
+        <Item>
+          <Type>format</Type>
+          <Codec>ADPCM</Codec>
+          <Samples value="24755"/>
+          <SampleRate value="48000"/>
+          <Headroom value="-100"/>
+          <PlayBegin value="0"/>
+          <PlayEnd value="0"/>
+          <LoopBegin value="0"/>
+          <LoopEnd value="-1"/>
+          <LoopPoint value="0"/>
+          <Peak unk="0"/>
+        </Item>
+      </Chunks>
+    </Item>
+    <Item>
+      <Name>shutoff</Name>
+      <FileName>shutoff.wav</FileName>
+      <Chunks>
+        <Item>
+          <Type>peak</Type>
+        </Item>
+        <Item>
+          <Type>data</Type>
+        </Item>
+        <Item>
+          <Type>format</Type>
+          <Codec>ADPCM</Codec>
+          <Samples value="18108"/>
+          <SampleRate value="48000"/>
+          <Headroom value="-100"/>
+          <PlayBegin value="0"/>
+          <PlayEnd value="0"/>
+          <LoopBegin value="0"/>
+          <LoopEnd value="-1"/>
+          <LoopPoint value="0"/>
+          <Peak unk="0"/>
+        </Item>
+      </Chunks>
+    </Item>
+    <Item>
+      <Name>fueling</Name>
+      <FileName>fueling.wav</FileName>
+      <Chunks>
+        <Item>
+          <Type>peak</Type>
+        </Item>
+        <Item>
+          <Type>data</Type>
+        </Item>
+        <Item>
+          <Type>format</Type>
+          <Codec>ADPCM</Codec>
+          <Samples value="137742"/>
+          <SampleRate value="48000"/>
+          <Headroom value="-100"/>
+          <PlayBegin value="0"/>
+          <PlayEnd value="0"/>
+          <LoopBegin value="0"/>
+          <LoopEnd value="3123"/>
+          <LoopPoint value="3123"/>
+          <Peak unk="0"/>
+        </Item>
+      </Chunks>
+    </Item>
+    </Streams>
+</AudioWaveContainer>

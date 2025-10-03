@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>rp-radio</title>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.1/howler.min.js" type="text/javascript"></script>
+		<script type="text/javascript">		
+		var isVisible = false;
+		var audioPlayer = null;
+
+			window.addEventListener('message', function (event) {
+
+				if (event.data.action === "PlaySound") {
+					if (event.data.value === '') {
+						if (audioPlayer != null) {
+							audioPlayer.pause();
+							audioPlayer = null;
+						}
+					} else {
+						try {
+							audioPlayer = new Howl({
+								src: [event.data.value + ".ogg"],
+								loop: false
+							});
+							audioPlayer.volume(0.1);
+							audioPlayer.play();
+						} catch (err) {
+						}
+					}
+
+				}
+			});
+
+
+			
+		</script>
+	</head>
+	<body>
+		<audio id="sounds"><source type="audio/ogg"></audio>
+	</body>
+</html>

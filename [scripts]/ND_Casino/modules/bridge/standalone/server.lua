@@ -1,3 +1,0 @@
-local bridge = {}
-
-return bridge

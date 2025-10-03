@@ -1,0 +1,806 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: transparent;
+    overflow: hidden;
+}
+
+/* Hide BigDaddy-Fuel's native gauge - we're using our own */
+#fuelgauge {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+#hud-container {
+    position: fixed;
+    bottom: 20px; /* Default position when not in vehicle */
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+    transition: bottom 0.2s ease-out; /* Faster, snappier animation */
+}
+
+#hud-container.in-vehicle {
+    bottom: 245px; /* Position when in vehicle */
+}
+
+.stat-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transform: perspective(800px) rotateY(8deg) rotateX(3deg) rotateZ(-1deg);
+}
+
+.stat-icon {
+    width: 24px;
+    height: 24px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+    image-rendering: crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Fallback if images fail to load */
+.stat-icon::before {
+    content: attr(alt);
+    font-size: 20px;
+    display: none;
+}
+
+.stat-icon[style*="display: none"]::before {
+    display: inline;
+}
+
+/* Health Bar Styles */
+.health-bar {
+    position: relative;
+    width: 200px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 2px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: visible;
+}
+
+.health-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff4444, #ff6666);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.health-glow {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: radial-gradient(ellipse, rgba(255, 68, 68, 0.4), transparent);
+    border-radius: 8px;
+    opacity: 0.8;
+    z-index: 1;
+}
+
+/* Armor Bars Styles */
+.armor-bars {
+    display: flex;
+    gap: 4px;
+    position: relative;
+}
+
+.armor-bar {
+    position: relative;
+    width: 35px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 2px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+.armor-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4488ff, #66aaff);
+    border-radius: 2px;
+    transition: width 0.3s ease, opacity 0.3s ease;
+    position: relative;
+    z-index: 2;
+    width: 0%;
+    opacity: 0;
+}
+
+.armor-fill.active {
+    opacity: 1;
+}
+
+.armor-glow {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: radial-gradient(ellipse, rgba(68, 136, 255, 0.4), transparent);
+    border-radius: 8px;
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+}
+
+.armor-bar.active .armor-glow {
+    opacity: 0.8;
+}
+
+/* Fade animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.stat-container {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Low health warning */
+.health-fill.low-health {
+    background: linear-gradient(90deg, #ff2222, #ff4444);
+    animation: healthWarning 1s infinite alternate;
+}
+
+@keyframes healthWarning {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* Damage flash effect */
+.health-fill.damage-flash {
+    background: linear-gradient(90deg, #ffffff, #ffcccc) !important;
+    animation: damageFlash 0.2s ease-out;
+}
+
+@keyframes damageFlash {
+    0% { background: linear-gradient(90deg, #ffffff, #ffcccc); }
+    100% { background: linear-gradient(90deg, #ff4444, #ff6666); }
+}
+
+/* Stat Text Styles */
+.stat-text {
+    position: absolute;
+    right: -45px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.8), 0 1px 2px rgba(0, 0, 0, 1);
+    white-space: nowrap;
+    z-index: 10;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3));
+    transition: color 0.3s ease;
+}
+
+/* Health text color changes */
+#health-text.low-health {
+    color: #ff4444;
+    text-shadow: 0 0 8px rgba(255, 68, 68, 0.8), 0 1px 2px rgba(0, 0, 0, 1);
+    animation: healthTextWarning 1s infinite alternate;
+}
+
+@keyframes healthTextWarning {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+/* Armor text positioning */
+#armor-text {
+    position: absolute;
+    right: -45px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #66aaff;
+    text-shadow: 0 0 8px rgba(102, 170, 255, 0.6), 0 1px 2px rgba(0, 0, 0, 1);
+}
+
+/* Stamina Bars Styles */
+.stamina-bars-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: relative;
+}
+
+.stamina-bars {
+    display: flex;
+    gap: 4px;
+    position: relative;
+}
+
+.stamina-bars-top {
+    /* Top row - normal stamina */
+}
+
+.stamina-bars-bottom {
+    /* Bottom row - law enforcement bonus stamina */
+    gap: 2px; /* Slightly smaller gap for bottom row */
+}
+
+.stamina-bar {
+    position: relative;
+    width: 35px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 2px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+.stamina-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #44ff44, #66ff66);
+    border-radius: 2px;
+    transition: width 0.3s ease, opacity 0.3s ease;
+    position: relative;
+    z-index: 2;
+    width: 0%;
+    opacity: 0;
+}
+
+.stamina-fill.active {
+    opacity: 1;
+}
+
+.stamina-glow {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: radial-gradient(ellipse, rgba(68, 255, 68, 0.4), transparent);
+    border-radius: 8px;
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+}
+
+.stamina-bar.active .stamina-glow {
+    opacity: 0.8;
+}
+
+/* Low stamina warning */
+.stamina-fill.low-stamina {
+    background: linear-gradient(90deg, #ffaa44, #ffcc66);
+    animation: staminaWarning 1s infinite alternate;
+}
+
+@keyframes staminaWarning {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* Stamina text positioning */
+#stamina-text {
+    position: absolute;
+    right: -45px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #66ff66;
+    text-shadow: 0 0 8px rgba(102, 255, 102, 0.6), 0 1px 2px rgba(0, 0, 0, 1);
+}
+
+#stamina-text.low-stamina {
+    color: #ffaa44;
+    text-shadow: 0 0 8px rgba(255, 170, 68, 0.8), 0 1px 2px rgba(0, 0, 0, 1);
+}
+
+/* Fuel Bars Styles */
+.fuel-icon {
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+}
+
+.fuel-bars {
+    display: flex;
+    gap: 4px;
+    position: relative;
+}
+
+.fuel-bar {
+    position: relative;
+    width: 35px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 2px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+.fuel-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffaa44, #ffcc66);
+    border-radius: 2px;
+    transition: width 0.3s ease, opacity 0.3s ease, background 0.3s ease;
+    position: relative;
+    z-index: 2;
+    width: 0%;
+    opacity: 0;
+}
+
+.fuel-fill.active {
+    opacity: 1;
+}
+
+.fuel-glow {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: radial-gradient(ellipse, rgba(255, 170, 68, 0.4), transparent);
+    border-radius: 8px;
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+}
+
+.fuel-bar.active .fuel-glow {
+    opacity: 0.8;
+}
+
+/* Low fuel warning */
+.fuel-fill.low-fuel {
+    background: linear-gradient(90deg, #ff4444, #ff6666);
+    animation: fuelWarning 1s infinite alternate;
+}
+
+@keyframes fuelWarning {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* Fuel text positioning */
+#fuel-text {
+    position: absolute;
+    right: -45px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ffcc66;
+    text-shadow: 0 0 8px rgba(255, 204, 102, 0.6), 0 1px 2px rgba(0, 0, 0, 1);
+}
+
+#fuel-text.low-fuel {
+    color: #ff4444;
+    text-shadow: 0 0 8px rgba(255, 68, 68, 0.8), 0 1px 2px rgba(0, 0, 0, 1);
+    animation: fuelTextWarning 1s infinite alternate;
+}
+
+@keyframes fuelTextWarning {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+/* =================== NEW UNIFIED HUD ELEMENTS =================== */
+
+/* Info Panel Base Styles */
+.info-panel {
+    position: fixed;
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    padding: 15px 18px;
+    pointer-events: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transform: perspective(800px) rotateY(-2deg) rotateX(1deg) rotateZ(0.5deg);
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Panel Positioning */
+.top-left {
+    top: 1.5%;
+    right: 0.8%;
+    left: auto;
+    transform: perspective(800px) rotateY(-8deg) rotateX(3deg) rotateZ(1deg);
+}
+
+/* Panel Headers */
+.panel-header {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 0 6px rgba(255, 255, 255, 0.5), 0 2px 4px rgba(0, 0, 0, 1);
+    padding-bottom: 4px;
+}
+
+/* Priority Status Styling */
+.priority-zones {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.priority-zone {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 180px;
+}
+
+.zone-label {
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1);
+}
+
+.zone-status {
+    color: #66aaff;
+    font-size: 11px;
+    font-weight: bold;
+    text-shadow: 0 0 6px rgba(102, 170, 255, 0.6), 0 1px 2px rgba(0, 0, 0, 1);
+    padding: 2px 8px;
+    background: rgba(102, 170, 255, 0.1);
+    border-radius: 4px;
+    border: 1px solid rgba(102, 170, 255, 0.3);
+}
+
+/* Priority status colors */
+.zone-status.available {
+    color: #44ff44;
+    background: rgba(68, 255, 68, 0.1);
+    border-color: rgba(68, 255, 68, 0.3);
+    text-shadow: 0 0 6px rgba(68, 255, 68, 0.6), 0 1px 2px rgba(0, 0, 0, 1);
+}
+
+.zone-status.active {
+    color: #ff4444;
+    background: rgba(255, 68, 68, 0.1);
+    border-color: rgba(255, 68, 68, 0.3);
+    text-shadow: 0 0 6px rgba(255, 68, 68, 0.6), 0 1px 2px rgba(0, 0, 0, 1);
+    animation: activeStatusPulse 2s infinite;
+}
+
+.zone-status.hold {
+    color: #ffaa44;
+    background: rgba(255, 170, 68, 0.1);
+    border-color: rgba(255, 170, 68, 0.3);
+    text-shadow: 0 0 6px rgba(255, 170, 68, 0.6), 0 1px 2px rgba(0, 0, 0, 1);
+}
+
+.zone-status.cooldown {
+    color: #66aaff;
+    background: rgba(102, 170, 255, 0.1);
+    border-color: rgba(102, 170, 255, 0.3);
+    text-shadow: 0 0 6px rgba(102, 170, 255, 0.6), 0 1px 2px rgba(0, 0, 0, 1);
+}
+
+@keyframes activeStatusPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Location Info Styling */
+.location-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.location-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Allow multiline content to align properly */
+    min-width: 350px; /* Increased from 200px to accommodate longer text */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+}
+
+.info-label {
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1);
+}
+
+.info-value {
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: bold;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 1);
+    text-align: right;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 300px; /* Increased from 120px to allow longer text */
+    white-space: normal; /* Allow text wrapping */
+}
+
+/* Time Display Styling */
+.info-strip {
+    position: fixed;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    pointer-events: none;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.bottom-right {
+    bottom: 20px;
+    right: 20px;
+    transform: perspective(800px) rotateY(-6deg) rotateX(-2deg) rotateZ(0.5deg);
+}
+
+.time-text {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    white-space: nowrap;
+    min-width: 200px;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-height: 600px) {
+    .top-left, .top-right {
+        top: 10px;
+    }
+
+    .bottom-right {
+        bottom: 10px;
+    }
+
+    #hud-container {
+        bottom: 10px;
+        left: 10px;
+    }
+}
+
+/* Speed Limit Display Styling */
+.speedlimit-container {
+    position: fixed;
+    bottom: 50px;
+    right: 20px;
+    pointer-events: none;
+    z-index: 100;
+    transform: perspective(800px) rotateY(-6deg) rotateX(-2deg) rotateZ(0.5deg);
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+.speedlimit-label {
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-bottom: 2px;
+    letter-spacing: 1px;
+}
+
+.speedlimit-value {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.6), 0 2px 4px rgba(0, 0, 0, 1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1;
+    margin: 2px 0;
+}
+
+.speedlimit-unit {
+    color: #ffffff;
+    font-size: 8px;
+    font-weight: bold;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 1px;
+    letter-spacing: 1px;
+}
+
+/* Hide panels when HUD is disabled */
+body.hud-hidden .info-panel,
+body.hud-hidden .info-strip,
+body.hud-hidden .speedlimit-container {
+    display: none;
+}
+
+/* =================== SETTINGS MENU STYLES =================== */
+
+.settings-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    backdrop-filter: blur(5px);
+}
+
+.settings-container {
+    background: rgba(20, 20, 20, 0.95);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    width: 500px;
+    max-height: 600px;
+    overflow-y: auto;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+.settings-container h2 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.settings-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.tab-btn {
+    background: transparent;
+    color: #cccccc;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.tab-btn:hover {
+    color: #ffffff;
+}
+
+.tab-btn.active {
+    color: #66aaff;
+    border-bottom: 2px solid #66aaff;
+}
+
+.tab-content {
+    display: none;
+    color: #ffffff;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-content h3 {
+    color: #66aaff;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.tab-content label {
+    display: block;
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.tab-content input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.tab-content input[type="color"] {
+    float: right;
+    width: 50px;
+    height: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.settings-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.settings-buttons button {
+    background: rgba(102, 170, 255, 0.2);
+    color: #ffffff;
+    border: 1px solid #66aaff;
+    padding: 10px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.settings-buttons button:hover {
+    background: rgba(102, 170, 255, 0.4);
+    box-shadow: 0 0 10px rgba(102, 170, 255, 0.5);
+}
+
+/* Weapon Display Styling */
+.weapon-container {
+    position: fixed;
+    bottom: 60px; /* Position above time display */
+    right: 20px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    min-width: 200px;
+    pointer-events: none;
+    transform: perspective(800px) rotateY(-6deg) rotateX(-2deg) rotateZ(0.5deg);
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.weapon-header {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 1);
+    text-align: center;
+}
+
+.weapon-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.weapon-name {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 1);
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.weapon-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.weapon-stat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.stat-label {
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 1);
+}
+
+.stat-value {
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 1);
+}
+
+.stat-separator {
+    color: #ffffff;
+    margin: 0 2px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 1);
+}

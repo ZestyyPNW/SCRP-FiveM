@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<Dat54>
+  <Version value="7314721"/>
+  <ContainerPaths>
+    <Item>audiodirectory\fuel_sounds</Item>
+  </ContainerPaths>
+  <Items>
+    <Item type="SimpleSound">
+      <Name>pumpmount_sp</Name>
+      <Header>
+        <Flags value="0x00008004"/>
+        <Category>scripted</Category>
+      </Header>
+      <ContainerName>audiodirectory/fuel_sounds</ContainerName>
+      <FileName>pumpmount</FileName>
+      <WaveSlotNum value="0"/>
+    </Item>
+    <Item type="SimpleSound">
+      <Name>shutoff_sp</Name>
+      <Header>
+        <Flags value="0x00008004"/>
+        <Category>scripted</Category>
+      </Header>
+      <ContainerName>audiodirectory/fuel_sounds</ContainerName>
+      <FileName>shutoff</FileName>
+      <WaveSlotNum value="0"/>
+    </Item>
+    <Item type="SimpleSound">
+      <Name>fueling_sp</Name>
+      <Header>
+        <Flags value="0x00008004"/>
+        <Category>scripted</Category>
+      </Header>
+      <ContainerName>audiodirectory/fuel_sounds</ContainerName>
+      <FileName>fueling</FileName>
+      <WaveSlotNum value="0"/>
+    </Item>
+    <Item type="SimpleSound">
+      <Name>carmount_sp</Name>
+      <Header>
+        <Flags value="0x00008004"/>
+        <Category>scripted</Category>
+      </Header>
+      <ContainerName>audiodirectory/fuel_sounds</ContainerName>
+      <FileName>carmount</FileName>
+      <WaveSlotNum value="0"/>
+    </Item>
+    <Item type="SoundSet">
+      <Name>fuel_soundset</Name>
+      <Header>
+        <Flags value="0xAAAAAAAA"/>
+      </Header>
+      <SoundSets>
+        <Item>
+          <ScriptName>pumpmount</ScriptName>
+          <ChildSound>pumpmount_sp</ChildSound>
+        </Item>
+        <Item>
+          <ScriptName>shutoff</ScriptName>
+          <ChildSound>shutoff_sp</ChildSound>
+        </Item>
+        <Item>
+          <ScriptName>fueling</ScriptName>
+          <ChildSound>fueling_sp</ChildSound>
+        </Item>
+        <Item>
+          <ScriptName>carmount</ScriptName>
+          <ChildSound>carmount_sp</ChildSound>
+        </Item>
+      </SoundSets>
+    </Item>
+  </Items>
+</Dat54>

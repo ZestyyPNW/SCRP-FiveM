@@ -1,0 +1,140 @@
+﻿/* you can define a custom font here */
+@font-face {
+	font-family: BIGDADDY;
+	src: url(../assets/BADABB_.TTF);
+}
+
+body {
+	transition: all 1s ease-in-out .5s;
+}
+
+.menuwrapper {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: rgba(0,0,0,.5);
+}
+
+.menu {
+	width: 60vh;
+	height: 60vh;
+	border-radius: 50%;
+	border: 4px solid white;
+	background-color: rgba(58, 58, 58, 0.7);
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	box-shadow: 0 0 20px rgba(0,0,0,.5);
+}
+
+.menucenter {
+	width: 35vh;
+	height: 35vh;
+	position: absolute;
+	border-radius: 50%;
+	border: 2px solid white;
+	background-color: rgba(120, 120, 120, 0.7);
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	text-align: center;
+}
+
+.center {
+	width: 10vh;
+	height: 10vh;
+	background: rgba(0,0,0,.7);
+	border-radius: 50%;
+	border: 2px solid white;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	cursor: pointer;
+	box-shadow: 0 0 20px rgba(0,0,0,.5);
+}
+
+#menubacklabel {
+	color: white;
+	font-family: 'BIGDADDY', Impact, arial, sans-serif !important;
+	font-size: 3vh;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#menumainlabel {
+	position: absolute;
+	width: 100%;
+	top: 22%;
+	transform: translate(0,-50%);
+	text-align: center;
+}
+
+#menusecondarylabel {
+	position: absolute;
+	width: 100%;
+	top: 78%;
+	transform: translate(0,-50%);
+	text-align: center;
+}
+
+.label {
+	letter-spacing: .15vh;
+	font-family: 'BIGDADDY', Impact, arial, sans-serif !important;
+	font-size: 2.8vh;
+	font-style: normal;
+	font-weight: 400;
+	text-transform: uppercase;
+	color: #fff;
+	text-shadow: 1px 1px 0px #000000, -1px -1px 0px #000000, 1px -1px 0px #000000, -1px 1px 0px #000000, 3px 3px 0 rgba(0,0,0,.3);
+}
+
+.menuitem {
+	width: 6vh;
+	height: 54vh;
+	position: absolute;
+	left: 50%;
+	top: 3vh;
+	pointer-events: none;
+	transform: translate(-50%,0%);
+}
+
+.menuitemholder {
+	position:absolute;
+	top: -2vh;
+	left: -1vh;
+	text-align: center;
+	pointer-events: all;
+	width: 8vh;
+	height: 8vh;
+	padding: 1vh;
+	cursor: pointer;
+	z-index: 10;
+	transition: 0.1s;
+	border-radius: 50%;
+	border: 2px solid transparent;
+}
+.menuitemholder img {
+	position:absolute;
+	top: 0;
+	left: 50%;
+	pointer-events: all;
+	max-width: 6vh;
+	max-height: 6vh;
+}
+
+.menuitemholder.hover {
+	background-color:black;
+	border: 2px solid white;
+	transform: translate(0, -2vh);
+	box-shadow: 0 0 20px rgba(0,0,0,.5);
+}
+
+.hidden {
+	opacity: 0;	
+}

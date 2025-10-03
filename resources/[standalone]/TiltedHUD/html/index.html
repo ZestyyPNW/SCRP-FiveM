@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unified Tilted HUD</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Combined Info Panel (Top Left) -->
+    <div id="info-panel" class="info-panel top-left">
+        <div class="panel-header">LOCATION</div>
+        <div class="location-info">
+            <div id="aop-display" class="location-item">
+                <span class="info-label">AOP:</span>
+                <span class="info-value">Los Angeles, CA</span>
+            </div>
+            <div id="postal-display" class="location-item">
+                <span class="info-label">Postal:</span>
+                <span class="info-value">000</span>
+            </div>
+            <div id="street-display" class="location-item">
+                <span class="info-label">Street:</span>
+                <span class="info-value">Unknown</span>
+            </div>
+            <div id="district-display" class="location-item">
+                <span class="info-label">District:</span>
+                <span class="info-value">Unknown</span>
+            </div>
+        </div>
+        <div class="panel-header">PRIORITY STATUS</div>
+        <div class="priority-zones">
+            <div id="socal-status" class="priority-zone">
+                <span class="zone-label">SoCal:</span>
+                <span class="zone-status">Cooldown</span>
+            </div>
+            <div id="nocal-status" class="priority-zone">
+                <span class="zone-label">NoCal:</span>
+                <span class="zone-status">Cooldown</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main HUD Container (Bottom Left) -->
+    <div id="hud-container">
+        <!-- Health Bar -->
+        <div id="health-container" class="stat-container">
+            <img src="imgs/health.png" class="stat-icon health-icon" alt="❤️">
+            <div class="health-bar">
+                <div id="health-fill" class="health-fill"></div>
+                <div class="stat-glow health-glow"></div>
+                <div id="health-text" class="stat-text">100</div>
+            </div>
+        </div>
+
+        <!-- Armor Bars -->
+        <div id="armor-container" class="stat-container">
+            <img src="imgs/armor.png" class="stat-icon armor-icon" alt="🛡️">
+            <div class="armor-bars">
+                <div class="armor-bar" data-segment="1">
+                    <div class="armor-fill"></div>
+                    <div class="stat-glow armor-glow"></div>
+                </div>
+                <div class="armor-bar" data-segment="2">
+                    <div class="armor-fill"></div>
+                    <div class="stat-glow armor-glow"></div>
+                </div>
+                <div class="armor-bar" data-segment="3">
+                    <div class="armor-fill"></div>
+                    <div class="stat-glow armor-glow"></div>
+                </div>
+                <div class="armor-bar" data-segment="4">
+                    <div class="armor-fill"></div>
+                    <div class="stat-glow armor-glow"></div>
+                </div>
+                <div class="armor-bar" data-segment="5">
+                    <div class="armor-fill"></div>
+                    <div class="stat-glow armor-glow"></div>
+                </div>
+                <div id="armor-text" class="stat-text">0</div>
+            </div>
+        </div>
+
+        <!-- Stamina Bars -->
+        <div id="stamina-container" class="stat-container" style="display: none;">
+            <img src="imgs/stamina.png" class="stat-icon stamina-icon" alt="🏃">
+            <div class="stamina-bars-wrapper">
+                <div class="stamina-bars stamina-bars-top">
+                    <div class="stamina-bar" data-segment="1">
+                        <div class="stamina-fill"></div>
+                        <div class="stat-glow stamina-glow"></div>
+                    </div>
+                    <div class="stamina-bar" data-segment="2">
+                        <div class="stamina-fill"></div>
+                        <div class="stat-glow stamina-glow"></div>
+                    </div>
+                    <div class="stamina-bar" data-segment="3">
+                        <div class="stamina-fill"></div>
+                        <div class="stat-glow stamina-glow"></div>
+                    </div>
+                    <div class="stamina-bar" data-segment="4">
+                        <div class="stamina-fill"></div>
+                        <div class="stat-glow stamina-glow"></div>
+                    </div>
+                    <div class="stamina-bar" data-segment="5">
+                        <div class="stamina-fill"></div>
+                        <div class="stat-glow stamina-glow"></div>
+                    </div>
+                </div>
+                <div class="stamina-bars stamina-bars-bottom" style="display: none;">
+                    <div class="stamina-bar" data-segment="6">
+                        <div class="stamina-fill"></div>
+                        <div class="stat-glow stamina-glow"></div>
+                    </div>
+                    <div class="stamina-bar" data-segment="7">
+                        <div class="stamina-fill"></div>
+                        <div class="stat-glow stamina-glow"></div>
+                    </div>
+                </div>
+                <div id="stamina-text" class="stat-text">100</div>
+            </div>
+        </div>
+
+        <!-- Fuel Bars -->
+        <div id="fuel-container" class="stat-container" style="display: none;">
+            <div class="fuel-icon stat-icon">⛽</div>
+            <div class="fuel-bars">
+                <div class="fuel-bar" data-segment="1">
+                    <div class="fuel-fill"></div>
+                    <div class="stat-glow fuel-glow"></div>
+                </div>
+                <div class="fuel-bar" data-segment="2">
+                    <div class="fuel-fill"></div>
+                    <div class="stat-glow fuel-glow"></div>
+                </div>
+                <div class="fuel-bar" data-segment="3">
+                    <div class="fuel-fill"></div>
+                    <div class="stat-glow fuel-glow"></div>
+                </div>
+                <div class="fuel-bar" data-segment="4">
+                    <div class="fuel-fill"></div>
+                    <div class="stat-glow fuel-glow"></div>
+                </div>
+                <div class="fuel-bar" data-segment="5">
+                    <div class="fuel-fill"></div>
+                    <div class="stat-glow fuel-glow"></div>
+                </div>
+                <div id="fuel-text" class="stat-text">100</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weapon Display (Above Time) -->
+    <div id="weapon-panel" class="weapon-container" style="display: none;">
+        <div class="weapon-header">WEAPON</div>
+        <div class="weapon-info">
+            <div id="weapon-name" class="weapon-name">Unknown</div>
+            <div class="weapon-stats">
+                <div class="weapon-stat">
+                    <span class="stat-label">AMMO:</span>
+                    <span id="weapon-ammo" class="stat-value">0</span>
+                    <span class="stat-separator">/</span>
+                    <span id="weapon-max-ammo" class="stat-value">0</span>
+                </div>
+                <div class="weapon-stat">
+                    <span class="stat-label">CLIP:</span>
+                    <span id="weapon-clip" class="stat-value">0</span>
+                    <span class="stat-separator">/</span>
+                    <span id="weapon-clip-size" class="stat-value">0</span>
+                </div>
+                <div class="weapon-stat">
+                    <span class="stat-label">RESERVE:</span>
+                    <span id="weapon-reserve" class="stat-value">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Time Display (Bottom Right) -->
+    <div id="time-panel" class="info-strip bottom-right">
+        <div id="time-display" class="time-text">12:00</div>
+    </div>
+
+    <!-- Speed Limit Display (Bottom Left) -->
+    <div id="speedlimit-panel" class="speedlimit-container" style="display: none;">
+        <div class="speedlimit-label">SPEED LIMIT</div>
+        <div id="speedlimit-value" class="speedlimit-value">65</div>
+        <div class="speedlimit-unit">MPH</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
