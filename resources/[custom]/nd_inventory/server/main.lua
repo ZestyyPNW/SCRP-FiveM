@@ -40,7 +40,7 @@ CreateThread(function()
     Wait(1000)
     print('[nd_inventory] Checking database table...')
     MySQL.Async.execute([[
-        ALTER TABLE characters
+        ALTER TABLE nd_characters
         ADD COLUMN IF NOT EXISTS inventory LONGTEXT DEFAULT NULL
     ]], {}, function(result)
         print('[nd_inventory] Database column check complete')
@@ -307,22 +307,31 @@ end
 
 -- Save player inventory to database
 function SavePlayerInventory(source)
+    if not NDCore then return end
+
     local player = NDCore.Functions.GetPlayer(source)
-    if not player then return end
+    if not player or not player.id then return end
 
     local inventory = GetInventory('player:' .. source)
     if not inventory then return end
 
     local inventoryData = json.encode(inventory.items)
 
-    MySQL.Async.execute('UPDATE characters SET inventory = @inventory WHERE character_id = @id', {
+    MySQL.Async.execute('UPDATE nd_characters SET inventory = @inventory WHERE charid = @id', {
         ['@inventory'] = inventoryData,
-        ['@id'] = player.character.id
+        ['@id'] = player.id
     })
 end
 
 -- Load player inventory from database
 function LoadPlayerInventory(source)
+    -- Check if inventory already exists in memory
+    local existingInv = GetInventory('player:' .. source)
+    if existingInv then
+        print(('[nd_inventory] Inventory already exists for player %s'):format(source))
+        return existingInv
+    end
+
     -- Check if NDCore is available
     if not NDCore then
         print('[nd_inventory] ERROR: NDCore not found!')
@@ -330,18 +339,20 @@ function LoadPlayerInventory(source)
     end
 
     local player = NDCore.Functions.GetPlayer(source)
+
     if not player then
         print(('[nd_inventory] ERROR: Player %s not found in NDCore'):format(source))
         return nil
     end
 
-    if not player.character or not player.character.id then
-        print(('[nd_inventory] ERROR: Player %s has no character loaded'):format(source))
+    if not player.id then
+        print(('[nd_inventory] ERROR: Player %s has no character ID'):format(source))
         return nil
     end
 
-    local result = MySQL.Sync.fetchAll('SELECT inventory FROM characters WHERE character_id = @id', {
-        ['@id'] = player.character.id
+    -- Load from database
+    local result = MySQL.Sync.fetchAll('SELECT inventory FROM nd_characters WHERE charid = @id', {
+        ['@id'] = player.id
     })
 
     local items = {}
@@ -350,11 +361,13 @@ function LoadPlayerInventory(source)
         if success then
             items = decoded or {}
         else
-            print(('[nd_inventory] ERROR: Failed to decode inventory for character %s'):format(player.character.id))
+            print(('[nd_inventory] ERROR: Failed to decode inventory for character %s'):format(player.id))
         end
     end
 
+    -- Create inventory
     local inventory = CreateInventory('player:' .. source, 'player', Config.MaxSlots, Config.MaxWeight, items)
+    print(('[nd_inventory] Loaded inventory for player %s (character %s - %s %s)'):format(source, player.id, player.firstName, player.lastName))
 
     return inventory
 end
@@ -368,9 +381,30 @@ exports('MoveItem', MoveItem)
 exports('GetItemData', GetItemData)
 
 -- Event Handlers
+
+-- When character loads in NDCore
+AddEventHandler('ND:characterLoaded', function(player)
+    if not player or not player.source then return end
+
+    local src = player.source
+    print(('[nd_inventory] Character loaded for player %s, loading inventory...'):format(src))
+
+    Wait(500) -- Small delay to ensure everything is ready
+
+    local inventory = LoadPlayerInventory(src)
+
+    if inventory then
+        TriggerClientEvent('nd_inventory:client:refreshInventory', src, inventory)
+        print(('[nd_inventory] Inventory loaded for player %s'):format(src))
+    else
+        print(('[nd_inventory] Failed to load inventory for player %s'):format(src))
+    end
+end)
+
+-- Manual load inventory (for testing)
 RegisterNetEvent('nd_inventory:server:loadInventory', function()
     local src = source
-    print(('[nd_inventory] Loading inventory for player %s'):format(src))
+    print(('[nd_inventory] Manual inventory load for player %s'):format(src))
 
     local inventory = LoadPlayerInventory(src)
 

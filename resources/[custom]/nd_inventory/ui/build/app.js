@@ -1,4 +1,6 @@
 // ND Inventory UI
+console.log('[ND Inventory] UI script loaded');
+
 let playerInventory = null;
 let secondaryInventory = null;
 let draggedItem = null;
@@ -21,6 +23,8 @@ document.addEventListener('keydown', (e) => {
 
 // Open inventory
 function openInventory(data) {
+    console.log('[ND Inventory] Opening inventory with data:', data);
+
     playerInventory = data.playerInventory;
     secondaryInventory = data.secondaryInventory;
 
@@ -35,6 +39,7 @@ function openInventory(data) {
 
     updateWeightDisplays();
     document.getElementById('inventory-container').classList.remove('hidden');
+    console.log('[ND Inventory] Inventory opened successfully');
 }
 
 // Close inventory
@@ -124,12 +129,14 @@ function renderInventory(containerId, inventory, side) {
 
 // Drag start
 function handleDragStart(e) {
+    console.log('[ND Inventory] Drag started');
     const slot = e.target.closest('.inventory-slot');
     draggedItem = {
         side: slot.dataset.side,
         slot: parseInt(slot.dataset.slot)
     };
     slot.classList.add('dragging');
+    console.log('[ND Inventory] Dragging item from slot:', draggedItem);
 }
 
 // Drag over
@@ -152,12 +159,18 @@ function handleDragLeave(e) {
 // Drop
 function handleDrop(e) {
     e.preventDefault();
+    console.log('[ND Inventory] Drop event triggered');
 
     const targetSlot = e.target.closest('.inventory-slot');
-    if (!targetSlot || !draggedItem) return;
+    if (!targetSlot || !draggedItem) {
+        console.log('[ND Inventory] Drop cancelled - no target or no dragged item');
+        return;
+    }
 
     const targetSide = targetSlot.dataset.side;
     const targetSlotNum = parseInt(targetSlot.dataset.slot);
+
+    console.log('[ND Inventory] Dropping to slot:', targetSlotNum, 'side:', targetSide);
 
     // Remove drag styling
     document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
@@ -165,6 +178,7 @@ function handleDrop(e) {
 
     // Don't allow dropping on same slot
     if (draggedItem.side === targetSide && draggedItem.slot === targetSlotNum) {
+        console.log('[ND Inventory] Drop cancelled - same slot');
         draggedItem = null;
         return;
     }
@@ -172,6 +186,13 @@ function handleDrop(e) {
     // Get inventory IDs
     const fromInv = draggedItem.side === 'player' ? playerInventory.id : secondaryInventory.id;
     const toInv = targetSide === 'player' ? playerInventory.id : secondaryInventory.id;
+
+    console.log('[ND Inventory] Moving item:', {
+        fromInv: fromInv,
+        fromSlot: draggedItem.slot,
+        toInv: toInv,
+        toSlot: targetSlotNum
+    });
 
     // Send move request to server
     sendNUI('moveItem', {
