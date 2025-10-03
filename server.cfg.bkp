@@ -35,7 +35,7 @@ ensure rconlog
 ensure ox_lib
 ensure oxmysql
 ensure ox_target
-ensure ox_inventory
+ensure nd_inventory
 ensure ND_Core
 
 # ND Core Systems
