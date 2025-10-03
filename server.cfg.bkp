@@ -1,21 +1,28 @@
 endpoint_add_tcp "0.0.0.0:30120"
 endpoint_add_udp "0.0.0.0:30120"
 
-set sv_licenseKey cfxk_1Pjed5I3mr6mphcSat3dN_4fTZlI
+set sv_licenseKey cfxk_EJPhS6WcJhzl7HSjxOBJ_L4ayB
 set steam_webApiKey none
 sv_hostname "Southern California Roleplay - Dev Server"
 sets sv_projectName "SCRP Dev Server"
 sets sv_projectDesc "Southern California Roleplay - Development Server"
 sv_maxclients 48
-set mysql_connection_string "mysql://root@172.18.0.1/ndcore?charset=utf8mb4"
+set mysql_connection_string "mysql://root@172.18.0.1/qbcore?charset=utf8mb4"
 
 # Performance & Loading
 set sv_forceIndirectListing true
 set sv_downloadBurstMultiplier 10
 
+# QBCore Settings
+setr voice_use3dAudio true
+setr voice_useSendingRangeOnly true
+
+# ox_inventory settings for QBCore
+setr inventory:framework "qb"
+setr inventory:slots 49
+setr inventory:weight 30000
+
 # Load configuration files
-exec ndcore.cfg
-exec inventory.cfg
 exec permissions.cfg
 
 # txAdmin
@@ -24,37 +31,23 @@ set txAdmin-debugMode "false"
 
 # FiveM Base Resources
 ensure mapmanager
-ensure chat
 ensure spawnmanager
-ensure sessionmanager
 ensure basic-gamemode
+ensure sessionmanager
 ensure hardcap
 ensure rconlog
+ensure baseevents
 
 # Framework Core
-ensure ox_lib
 ensure oxmysql
-ensure ox_target
-ensure ox_inventory
-ensure ND_Core
+ensure qb-core
 
-# ND Core Systems
-ensure ND_Characters
-ensure ND_VehicleSystem
-ensure ND_Banking
+# QBCore Character & Spawn
+ensure qb-multicharacter
+ensure qb-spawn
 
-# Jobs
-ensure ND_Police
-ensure ND_Ambulance
-
-# Utilities
-ensure ND_Fuel
-ensure ND_Doorlocks
-ensure ND_Properties
-ensure ND_Dealership
-ensure ND_MDT
-ensure ND_Jailing
-ensure ND_AppearanceShops
+# QBCore Vehicle Systems
+ensure qb-garages
 
 # Admin Tools
 ensure vMenu
