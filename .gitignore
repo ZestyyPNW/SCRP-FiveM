@@ -1,0 +1,49 @@
+# FiveM Server Files
+cache/
+*.log
+crash*.txt
+
+# txAdmin
+txData/
+
+# Large binary files
+alpine/
+*.dll
+*.so
+*.dylib
+
+# Node modules
+node_modules/
+
+# Database
+*.sql.gz
+*.db
+
+# Credentials and secrets
+.env
+*.key
+*.pem
+server.cfg
+ndcore.cfg
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Resource-specific ignores
+resources/*/node_modules/
+resources/*/.git/
+resources/[gamemodes]/
+resources/[gameplay]/
+resources/[managers]/
+resources/[system]/
+resources/[test]/
+
+# Keep only custom resources
+!resources/ND_*/
+!resources/ox_*/
+!resources/[local]/
