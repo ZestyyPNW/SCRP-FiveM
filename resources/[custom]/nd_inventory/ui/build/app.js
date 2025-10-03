@@ -97,6 +97,7 @@ function renderInventory(containerId, inventory, side) {
             img.onerror = () => {
                 img.src = 'images/placeholder.png';
             };
+            img.draggable = false; // Prevent image from being dragged instead of slot
             slotDiv.appendChild(img);
 
             // Item label
@@ -113,15 +114,16 @@ function renderInventory(containerId, inventory, side) {
                 slotDiv.appendChild(count);
             }
 
-            // Make draggable
+            // Make slot draggable
             slotDiv.draggable = true;
-            slotDiv.addEventListener('dragstart', handleDragStart);
         }
 
-        // Drag events
+        // Always attach drag events to allow dropping on empty slots
+        slotDiv.addEventListener('dragstart', handleDragStart);
         slotDiv.addEventListener('dragover', handleDragOver);
         slotDiv.addEventListener('drop', handleDrop);
         slotDiv.addEventListener('dragleave', handleDragLeave);
+        slotDiv.addEventListener('dragend', handleDragEnd);
 
         container.appendChild(slotDiv);
     });
@@ -129,42 +131,74 @@ function renderInventory(containerId, inventory, side) {
 
 // Drag start
 function handleDragStart(e) {
+    const slot = e.currentTarget;
+
+    // Only allow dragging if slot has an item
+    if (!slot.draggable) {
+        e.preventDefault();
+        return;
+    }
+
     console.log('[ND Inventory] Drag started');
-    const slot = e.target.closest('.inventory-slot');
+
     draggedItem = {
         side: slot.dataset.side,
         slot: parseInt(slot.dataset.slot)
     };
-    slot.classList.add('dragging');
+
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', slot.dataset.slot);
+
+    // Add visual feedback
+    setTimeout(() => {
+        slot.classList.add('dragging');
+    }, 0);
+
     console.log('[ND Inventory] Dragging item from slot:', draggedItem);
 }
 
 // Drag over
 function handleDragOver(e) {
     e.preventDefault();
-    const slot = e.target.closest('.inventory-slot');
+    e.stopPropagation();
+    e.dataTransfer.dropEffect = 'move';
+
+    const slot = e.currentTarget;
     if (slot && !slot.classList.contains('dragging')) {
         slot.classList.add('drag-over');
     }
+
+    return false;
 }
 
 // Drag leave
 function handleDragLeave(e) {
-    const slot = e.target.closest('.inventory-slot');
+    const slot = e.currentTarget;
     if (slot) {
         slot.classList.remove('drag-over');
     }
 }
 
+// Drag end
+function handleDragEnd(e) {
+    console.log('[ND Inventory] Drag end');
+    // Clean up all drag styling
+    document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+    document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+}
+
 // Drop
 function handleDrop(e) {
     e.preventDefault();
+    e.stopPropagation();
+
     console.log('[ND Inventory] Drop event triggered');
 
-    const targetSlot = e.target.closest('.inventory-slot');
+    const targetSlot = e.currentTarget;
+
     if (!targetSlot || !draggedItem) {
         console.log('[ND Inventory] Drop cancelled - no target or no dragged item');
-        return;
+        return false;
     }
 
     const targetSide = targetSlot.dataset.side;
@@ -180,7 +214,7 @@ function handleDrop(e) {
     if (draggedItem.side === targetSide && draggedItem.slot === targetSlotNum) {
         console.log('[ND Inventory] Drop cancelled - same slot');
         draggedItem = null;
-        return;
+        return false;
     }
 
     // Get inventory IDs
@@ -200,10 +234,11 @@ function handleDrop(e) {
         fromSlot: draggedItem.slot,
         toInv: toInv,
         toSlot: targetSlotNum,
-        count: null // Move entire stack
+        count: null
     });
 
     draggedItem = null;
+    return false;
 }
 
 // Update weight displays
