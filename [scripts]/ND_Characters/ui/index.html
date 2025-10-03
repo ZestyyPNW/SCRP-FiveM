@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" data-auto-a11y="true"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="script.js" type="text/javascript" defer></script>
+    </head>
+    <body>
+        <!--Main page design-->
+        <section id="overlay">
+            <!-- Top Header -->
+            <div class="header">
+                <div id="logoContainer">
+                    <img src="../images/logo.png" id="logo">
+                </div>
+                <h1 id="serverName"></h1>
+                <p id="aop" class="mainPage"></p>
+            </div>
+
+            <!-- Character Grid -->
+            <div class="character-grid-container">
+                <h2 class="section-title">
+                    Select Your Character
+                    <span id="playerAmount" class="char-count"></span>
+                </h2>
+                <div id="charactersSection" class="character-grid">
+                    <!--Characters will be added here-->
+                </div>
+            </div>
+
+            <!-- Bottom Actions -->
+            <div class="bottom-actions">
+                <button class="action-button create-btn" id="newCharacterButton">
+                    <i class="fas fa-user-plus"></i>
+                    Create New Character
+                </button>
+                <button class="action-button quit-btn" id="quitGameButton">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Quit Game
+                </button>
+            </div>
+        </section>
+
+        <!--Create character menu design-->
+        <form id="characterCreator" class="characterMenu">
+            <div id="characterCreatorTopText">
+                <i class="fas fa-user-edit"></i>
+                Character Creation
+            </div>
+            <hr id="characterCreatorTopTextLine">
+
+            <div id="characterInfoContainer">
+                <div id="characterInfoContainerLeft">
+                    <div class="form-group">
+                        <label class="firstRowText" for="firstname">First Name</label>
+                        <input id="firstName" class="firstRowInput" type="text" placeholder="Enter first name" name="firstname" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="secondRowText" for="dob">Date of Birth</label>
+                        <input id="dateOfBirth" class="secondRowInput" type="date" name="dob" max="9999-12-31" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="thirdRowText" for="twotter">Ethnicity</label>
+                        <input id="twtName" class="thirdRowInput" type="text" placeholder="Enter ethnicity" name="twotter" required>
+                    </div>
+                </div>
+
+                <div id="characterInfoContainerRight">
+                    <div class="form-group">
+                        <label class="firstRowText" for="lastname">Last Name</label>
+                        <input id="lastName" class="firstRowInput" type="text" placeholder="Enter last name" name="lastname" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="secondRowText" for="gender">Gender</label>
+                        <select id="gender" class="secondRowInput" name="gender" required>
+                            <option value="">Select gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="thirdRowText" for="department">Department</label>
+                        <select id="department" class="thirdRowInput departments" name="department" required>
+                            <option value="">Select department</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <hr id="characterCreatorTopTextLine">
+
+            <div class="form-actions">
+                <button id="submitCharacterCreation" class="characterSubmitButton" type="submit" form="characterCreator">
+                    <i class="fas fa-plus-circle"></i>
+                    Create Character
+                </button>
+                <button id="cancelCharacterCreation" class="characterResetButton" type="reset">
+                    <i class="fas fa-times-circle"></i>
+                    Cancel
+                </button>
+            </div>
+        </form>
+
+        <!--Edit character menu design-->
+        <form id="characterEditor" class="characterMenu">
+            <div id="characterCreatorTopText">
+                <i class="fas fa-user-edit"></i>
+                Character Editor
+            </div>
+            <hr id="characterCreatorTopTextLine">
+
+            <div id="characterInfoContainer">
+                <div id="characterInfoContainerLeft">
+                    <div class="form-group">
+                        <label class="firstRowText" for="newfirstname">First Name</label>
+                        <input id="newFirstName" class="firstRowInput" type="text" placeholder="Enter first name" name="newfirstname" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="secondRowText" for="newdob">Date of Birth</label>
+                        <input id="newDateOfBirth" class="secondRowInput" type="date" name="newdob" max="9999-12-31" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="thirdRowText" for="newtwotter">Ethnicity</label>
+                        <input id="newTwtName" class="thirdRowInput" type="text" placeholder="Enter ethnicity" name="newtwotter" required>
+                    </div>
+                </div>
+
+                <div id="characterInfoContainerRight">
+                    <div class="form-group">
+                        <label class="firstRowText" for="newlastname">Last Name</label>
+                        <input id="newLastName" class="firstRowInput" type="text" placeholder="Enter last name" name="newlastname" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="secondRowText" for="newgender">Gender</label>
+                        <select id="newGender" class="secondRowInput" name="newgender" required>
+                            <option value="">Select gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="thirdRowText" for="newdepartment">Department</label>
+                        <select id="newDepartment" class="thirdRowInput departments" name="newdepartment" required>
+                            <option value="">Select department</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <hr id="characterCreatorTopTextLine">
+
+            <div class="form-actions">
+                <button id="submitCharacterEditing" class="characterSubmitButton" type="submit" form="characterEditor">
+                    <i class="fas fa-save"></i>
+                    Save Changes
+                </button>
+                <button id="cancelCharacterEditing" class="characterResetButton" type="reset">
+                    <i class="fas fa-times-circle"></i>
+                    Cancel
+                </button>
+            </div>
+        </form>
+
+        <!--Character Spawn options-->
+        <section id="spawnLocation" class="spawnMenu">
+            <div id="characterCreatorTopText">
+                <i class="fas fa-map-marker-alt"></i>
+                Spawn Location
+            </div>
+            <hr id="characterCreatorTopTextLine">
+
+            <div id="spawnMenuContainer">
+                <!--Spawn locations will be added here-->
+            </div>
+
+            <hr id="characterCreatorTopTextLine">
+
+            <div class="spawn-actions">
+                <button id="tpDoNot">
+                    <i class="fas fa-compass"></i>
+                    Last Location
+                </button>
+                <button id="tpCancel">
+                    <i class="fas fa-times-circle"></i>
+                    Cancel
+                </button>
+            </div>
+        </section>
+
+        <!--Confirm exit game menu design-->
+        <section id="exitGameMenu" class="confirmationScreen">
+            <div id="characterCreatorTopText">
+                <i class="fas fa-exclamation-triangle"></i>
+                Are you sure you'd like to quit the game?
+            </div>
+            <hr id="characterCreatorTopTextLine">
+            <div class="form-actions">
+                <button id="exitGameConfirm" class="confirmationScreenConfirm">
+                    <i class="fas fa-check-circle"></i>
+                    Confirm
+                </button>
+                <button id="exitGameCancel" class="confirmationScreenCancel">
+                    <i class="fas fa-times-circle"></i>
+                    Cancel
+                </button>
+            </div>
+        </section>
+
+        <!--Confirm delete character button-->
+        <section id="deleteCharacterMenu" class="confirmationScreen">
+            <div id="characterCreatorTopText">
+                <i class="fas fa-exclamation-triangle"></i>
+                Are you sure you'd like to delete this character?
+            </div>
+            <hr id="characterCreatorTopTextLine">
+            <div class="form-actions">
+                <button id="deleteCharacterConfirm" class="confirmationScreenConfirm">
+                    <i class="fas fa-check-circle"></i>
+                    Confirm
+                </button>
+                <button id="deleteCharacterCancel" class="confirmationScreenCancel">
+                    <i class="fas fa-times-circle"></i>
+                    Cancel
+                </button>
+            </div>
+        </section>
+    </body>
+</html>
