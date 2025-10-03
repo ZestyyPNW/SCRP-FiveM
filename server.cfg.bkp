@@ -1,7 +1,7 @@
 endpoint_add_tcp "0.0.0.0:30120"
 endpoint_add_udp "0.0.0.0:30120"
 
-set sv_licenseKey cfxk_1Pjed5I3mr6mphcSat3dN_4fTZlI
+set sv_licenseKey cfxk_X5QVGXQmV2Gua4STQl1R_rMmQ6
 set steam_webApiKey none
 sv_hostname "Southern California Roleplay - Dev Server"
 sets sv_projectName "SCRP Dev Server"

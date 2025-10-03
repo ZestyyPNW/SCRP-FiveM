@@ -3,15 +3,48 @@ local Inventories = {}
 local Items = {}
 local DroppedItems = {}
 
--- Load items from JSON
-CreateThread(function()
-    local itemsJson = LoadResourceFile(GetCurrentResourceName(), 'items.json')
-    if itemsJson then
-        Items = json.decode(itemsJson)
-        print(('[nd_inventory] Loaded %s items'):format(#Items))
+print('[nd_inventory] Starting server initialization...')
+
+-- Initialize NDCore
+local success, result = pcall(function()
+    return exports["ND_Core"]:GetCoreObject()
+end)
+
+if success and result then
+    NDCore = result
+    print('[nd_inventory] NDCore loaded successfully')
+else
+    print('[nd_inventory] ERROR: Could not get NDCore object! Error: ' .. tostring(result))
+    NDCore = nil
+end
+
+-- Load items from JSON immediately
+print('[nd_inventory] Loading items...')
+local itemsJson = LoadResourceFile(GetCurrentResourceName(), 'items.json')
+if itemsJson then
+    local decodeSuccess, decoded = pcall(json.decode, itemsJson)
+    if decodeSuccess then
+        Items = decoded
+        local count = 0
+        for _ in pairs(Items) do count = count + 1 end
+        print(('[nd_inventory] Loaded %s items'):format(count))
     else
-        print('[nd_inventory] ERROR: items.json not found!')
+        print('[nd_inventory] ERROR: Failed to decode items.json: ' .. tostring(decoded))
     end
+else
+    print('[nd_inventory] ERROR: items.json not found!')
+end
+
+-- Check database table on resource start
+CreateThread(function()
+    Wait(1000)
+    print('[nd_inventory] Checking database table...')
+    MySQL.Async.execute([[
+        ALTER TABLE characters
+        ADD COLUMN IF NOT EXISTS inventory LONGTEXT DEFAULT NULL
+    ]], {}, function(result)
+        print('[nd_inventory] Database column check complete')
+    end)
 end)
 
 -- Get item data by name
@@ -290,16 +323,35 @@ end
 
 -- Load player inventory from database
 function LoadPlayerInventory(source)
+    -- Check if NDCore is available
+    if not NDCore then
+        print('[nd_inventory] ERROR: NDCore not found!')
+        return nil
+    end
+
     local player = NDCore.Functions.GetPlayer(source)
-    if not player then return end
+    if not player then
+        print(('[nd_inventory] ERROR: Player %s not found in NDCore'):format(source))
+        return nil
+    end
+
+    if not player.character or not player.character.id then
+        print(('[nd_inventory] ERROR: Player %s has no character loaded'):format(source))
+        return nil
+    end
 
     local result = MySQL.Sync.fetchAll('SELECT inventory FROM characters WHERE character_id = @id', {
         ['@id'] = player.character.id
     })
 
     local items = {}
-    if result[1] and result[1].inventory then
-        items = json.decode(result[1].inventory) or {}
+    if result[1] and result[1].inventory and result[1].inventory ~= '' then
+        local success, decoded = pcall(json.decode, result[1].inventory)
+        if success then
+            items = decoded or {}
+        else
+            print(('[nd_inventory] ERROR: Failed to decode inventory for character %s'):format(player.character.id))
+        end
     end
 
     local inventory = CreateInventory('player:' .. source, 'player', Config.MaxSlots, Config.MaxWeight, items)
@@ -318,7 +370,16 @@ exports('GetItemData', GetItemData)
 -- Event Handlers
 RegisterNetEvent('nd_inventory:server:loadInventory', function()
     local src = source
-    LoadPlayerInventory(src)
+    print(('[nd_inventory] Loading inventory for player %s'):format(src))
+
+    local inventory = LoadPlayerInventory(src)
+
+    if inventory then
+        TriggerClientEvent('nd_inventory:client:refreshInventory', src, inventory)
+        print(('[nd_inventory] Inventory loaded for player %s'):format(src))
+    else
+        print(('[nd_inventory] Failed to load inventory for player %s'):format(src))
+    end
 end)
 
 RegisterNetEvent('nd_inventory:server:moveItem', function(fromInvId, fromSlot, toInvId, toSlot, count)

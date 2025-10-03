@@ -110,7 +110,8 @@ end)
 
 -- On player loaded
 AddEventHandler('ND:characterLoaded', function()
-    Wait(1000)
+    print('[nd_inventory] Character loaded, requesting inventory...')
+    Wait(2000) -- Wait 2 seconds to ensure character is fully loaded
     TriggerServerEvent('nd_inventory:server:loadInventory')
 end)
 
