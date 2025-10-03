@@ -1,0 +1,61 @@
+endpoint_add_tcp "0.0.0.0:30120"
+endpoint_add_udp "0.0.0.0:30120"
+
+set sv_licenseKey cfxk_1Pjed5I3mr6mphcSat3dN_4fTZlI
+set steam_webApiKey none
+sv_hostname "Southern California Roleplay - Dev Server"
+sets sv_projectName "SCRP Dev Server"
+sets sv_projectDesc "Southern California Roleplay - Development Server"
+sv_maxclients 48
+set mysql_connection_string "mysql://root@172.18.0.1/ndcore?charset=utf8mb4"
+
+# Performance & Loading
+set sv_forceIndirectListing true
+set sv_downloadBurstMultiplier 10
+
+# Load configuration files
+exec ndcore.cfg
+exec inventory.cfg
+exec permissions.cfg
+
+# txAdmin
+set txAdminPort "40120"
+set txAdmin-debugMode "false"
+
+# FiveM Base Resources
+ensure mapmanager
+ensure chat
+ensure spawnmanager
+ensure sessionmanager
+ensure basic-gamemode
+ensure hardcap
+ensure rconlog
+
+# Framework Core
+ensure ox_lib
+ensure oxmysql
+ensure ox_target
+ensure ox_inventory
+ensure ND_Core
+
+# ND Core Systems
+ensure ND_Characters
+ensure ND_VehicleSystem
+ensure ND_Banking
+
+# Jobs
+ensure ND_Police
+ensure ND_Ambulance
+
+# Utilities
+ensure ND_Fuel
+ensure ND_Doorlocks
+ensure ND_Properties
+ensure ND_Dealership
+ensure ND_MDT
+ensure ND_Jailing
+ensure ND_AppearanceShops
+
+# Admin Tools
+ensure vMenu
+exec permissions.cfg
