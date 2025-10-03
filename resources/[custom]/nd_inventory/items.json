@@ -1,0 +1,70 @@
+[
+    {
+        "name": "water",
+        "label": "Water Bottle",
+        "weight": 500,
+        "stack": true,
+        "close": true,
+        "description": "A refreshing bottle of water",
+        "consume": 0.35
+    },
+    {
+        "name": "bread",
+        "label": "Bread",
+        "weight": 125,
+        "stack": true,
+        "close": true,
+        "description": "A loaf of bread",
+        "consume": 0.25
+    },
+    {
+        "name": "phone",
+        "label": "Phone",
+        "weight": 190,
+        "stack": false,
+        "close": true,
+        "description": "A smartphone"
+    },
+    {
+        "name": "money",
+        "label": "Cash",
+        "weight": 0,
+        "stack": true,
+        "close": false,
+        "description": "Physical currency"
+    },
+    {
+        "name": "lockpick",
+        "label": "Lockpick",
+        "weight": 50,
+        "stack": true,
+        "close": false,
+        "description": "Used for lockpicking"
+    },
+    {
+        "name": "bandage",
+        "label": "Bandage",
+        "weight": 115,
+        "stack": true,
+        "close": true,
+        "description": "Basic medical supply"
+    },
+    {
+        "name": "WEAPON_PISTOL",
+        "label": "Pistol",
+        "weight": 1000,
+        "stack": false,
+        "close": true,
+        "description": "A standard pistol",
+        "weapon": true,
+        "ammoname": "ammo-9"
+    },
+    {
+        "name": "ammo-9",
+        "label": "9mm Ammo",
+        "weight": 10,
+        "stack": true,
+        "close": false,
+        "description": "9mm ammunition"
+    }
+]
