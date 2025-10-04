@@ -11,7 +11,7 @@ end
 
 for k, _ in pairs(Config.Consumables.eat) do
     QBCore.Functions.CreateUseableItem(k, function(source, item)
-        if not exports['qb-inventory']:RemoveItem(source, item.name, 1, item.slot, 'qb-smallresources:consumables:eat') then return end
+        -- if not exports['qb-inventory']:RemoveItem(source, item.name, 1, item.slot, 'qb-smallresources:consumables:eat') then return end
         TriggerClientEvent('consumables:client:Eat', source, item.name)
     end)
 end
@@ -19,7 +19,7 @@ end
 ----------- / Drink
 for k, _ in pairs(Config.Consumables.drink) do
     QBCore.Functions.CreateUseableItem(k, function(source, item)
-        if not exports['qb-inventory']:RemoveItem(source, item.name, 1, item.slot, 'qb-smallresources:consumables:drink') then return end
+        -- if not exports['qb-inventory']:RemoveItem(source, item.name, 1, item.slot, 'qb-smallresources:consumables:drink') then return end
         TriggerClientEvent('consumables:client:Drink', source, item.name)
     end)
 end
@@ -27,21 +27,21 @@ end
 ----------- / Custom
 for k, _ in pairs(Config.Consumables.custom) do
     QBCore.Functions.CreateUseableItem(k, function(source, item)
-        if not exports['qb-inventory']:RemoveItem(source, item.name, 1, item.slot, 'qb-smallresources:consumables:custom') then return end
+        -- if not exports['qb-inventory']:RemoveItem(source, item.name, 1, item.slot, 'qb-smallresources:consumables:custom') then return end
         TriggerClientEvent('consumables:client:Custom', source, item.name)
     end)
 end
 
 local function createItem(name, type)
     QBCore.Functions.CreateUseableItem(name, function(source, item)
-        if not exports['qb-inventory']:RemoveItem(source, item.name, 1, item.slot, 'qb-smallresources:consumables:createItem') then return end
+        -- if not exports['qb-inventory']:RemoveItem(source, item.name, 1, item.slot, 'qb-smallresources:consumables:createItem') then return end
         TriggerClientEvent('consumables:client:' .. type, source, item.name)
     end)
 end
 ----------- / Drug
 
 QBCore.Functions.CreateUseableItem('joint', function(source, item)
-    if not exports['qb-inventory']:RemoveItem(source, item.name, 1, item.slot, 'qb-smallresources:joint') then return end
+    -- if not exports['qb-inventory']:RemoveItem(source, item.name, 1, item.slot, 'qb-smallresources:joint') then return end
     TriggerClientEvent('consumables:client:UseJoint', source)
 end)
 

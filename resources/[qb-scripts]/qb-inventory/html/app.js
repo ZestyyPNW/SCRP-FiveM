@@ -75,6 +75,8 @@ const InventoryContainer = Vue.createApp({
                 isShopInventory: false,
                 // Where item is coming from
                 inventory: "",
+                // Page System
+                currentPage: "inventories",
                 // Context Menu
                 showContextMenu: false,
                 contextMenuPosition: { top: "0px", left: "0px" },
@@ -195,6 +197,12 @@ const InventoryContainer = Vue.createApp({
             } catch (error) {
                 console.error("Error closing inventory:", error);
             }
+        },
+        switchToInventoriesPage() {
+            this.currentPage = "inventories";
+        },
+        switchToUtilitiesPage() {
+            this.currentPage = "utilities";
         },
         clearTransferAmount() {
             this.transferAmount = null;
@@ -916,6 +924,16 @@ const InventoryContainer = Vue.createApp({
             if (key === "Escape" || key === "Tab") {
                 if (this.isInventoryOpen) {
                     this.closeInventory();
+                }
+            }
+            if (key === "q" || key === "Q") {
+                if (this.isInventoryOpen) {
+                    this.switchToInventoriesPage();
+                }
+            }
+            if (key === "e" || key === "E") {
+                if (this.isInventoryOpen) {
+                    this.switchToUtilitiesPage();
                 }
             }
         });

@@ -17,6 +17,18 @@
     <body>
         <div id="app">
             <div class="inventory-container" v-if="isInventoryOpen" @mousemove="drag" @mouseup="endDrag" @mousedown="containerMouseDownAction">
+                <!-- Page Indicator -->
+                <div class="page-indicator">
+                    <div class="page-tab" :class="{ 'active': currentPage === 'inventories' }" @click="switchToInventoriesPage">
+                        <p>(Q) Inventories</p>
+                    </div>
+                    <div class="page-tab" :class="{ 'active': currentPage === 'utilities' }" @click="switchToUtilitiesPage">
+                        <p>(E) Utilities</p>
+                    </div>
+                </div>
+
+                <!-- Inventories Page -->
+                <div v-if="currentPage === 'inventories'" class="page-content">
                 <div class="inventory-section player-inventory-section">
                     <div class="inventory-header">
                         <div class="labels-container">
@@ -118,6 +130,15 @@
                                 </div> -->
                             </div>
                         </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Utilities Page -->
+                <div v-if="currentPage === 'utilities'" class="page-content utilities-page">
+                    <div class="utilities-container">
+                        <h2>Utilities</h2>
+                        <p>Coming soon...</p>
                     </div>
                 </div>
             </div>
