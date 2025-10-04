@@ -7,10 +7,10 @@ QB.Spawns = {
         label = 'Legion Square',
     },
 
-    policedp = {
-        coords = vector4(428.23, -984.28, 29.76, 3.5),
-        location = 'policedp',
-        label = 'Police Department',
+    marina = {
+        coords = vector4(-714.25, -1297.71, 5.1, 44.1),
+        location = 'marina',
+        label = 'Marina Del Rey',
     },
 
     paleto = {
