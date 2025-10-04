@@ -857,7 +857,9 @@ function RemoveItem(identifier, item, amount, slot, reason)
 
     if player then
         player.Functions.SetPlayerData('items', inventory)
-        
+        Wait(100) -- Small delay to ensure PlayerData syncs
+        TriggerClientEvent('qb-inventory:client:updateInventory', identifier)
+
         local itemInfo = QBCore.Shared.Items[item:lower()]
         if itemInfo and itemInfo.type == 'weapon' and inventoryItem.amount <= 0 then
             checkWeapon(identifier, item)
